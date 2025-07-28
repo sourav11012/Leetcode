@@ -10,14 +10,12 @@ class Solution {
             {
                 st.pop();
             }
-            if(st.isEmpty())
+            if(!st.isEmpty())
             {
-                ans[i] = 0;
-                st.push(new int[]{temperatures[i], i});
-            }else{
                 ans[i] = st.peek()[1] - i;
-                st.push(new int[]{temperatures[i],i});
+                
             }
+            st.push(new int[]{temperatures[i],i});
             
         }
 

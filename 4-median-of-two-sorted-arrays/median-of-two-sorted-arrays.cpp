@@ -33,7 +33,7 @@ public:
 
         int n = merge.size();
         if (n % 2 == 1) {
-            return merge[n / 2];
+            return (double)merge[n / 2];
         } else {
             int fidx = n / 2;
             int sidx = fidx - 1;

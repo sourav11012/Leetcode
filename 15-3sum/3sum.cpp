@@ -23,7 +23,7 @@ public:
                     j++;
                 }else{
                     vector<int> temp = {nums[i],nums[j],nums[k]};
-                    result.push_back(temp);
+                    result.emplace_back(temp);
                     j++;
                     k--;
                     while( j < k && nums[j] == nums[j - 1]) j++;

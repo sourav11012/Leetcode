@@ -1,36 +1,28 @@
 class Solution {
 public:
     int maxScore(vector<int>& cardPoints, int k) {
-       
-        int totalSum = 0;
-        for(int num: cardPoints)
-        {
-            totalSum += num;
-        }
-        
+        int n = cardPoints.size();
+        int totalSum = accumulate(cardPoints.begin(), cardPoints.end(), 0);
+
+        // If taking all cards
+        if (k == n) return totalSum;
+
+        int minWindowSize = n - k;
         int windowSum = 0;
-        int minWindowSize = cardPoints.size() - k;
-        for(int i = 0;i< minWindowSize ;i++)
-        {
+
+        // Initialize window sum with the first (n - k) elements
+        for (int i = 0; i < minWindowSize; i++) {
             windowSum += cardPoints[i];
-        }   
-        cout<<windowSum<<endl;
-        int minSum = windowSum;
-
-        int right = minWindowSize;
-        int left = 0;
-
-        while(right < cardPoints.size())
-        {
-            windowSum += cardPoints[right];
-            windowSum  -= cardPoints[left];
-            cout<<"window sum"<<windowSum<<" at "<<right<<endl;
-            minSum = std::min(minSum , windowSum);
-            cout<<"min sum"<<minSum<<" at "<<right<<endl;
-            right++;
-            left++;
         }
-        return (totalSum == minSum) ? minSum : totalSum - minSum;
+
+        int minSum = windowSum;
         
+        // Slide the window across the array
+        for (int right = minWindowSize, left = 0; right < n; right++, left++) {
+            windowSum += cardPoints[right] - cardPoints[left];
+            minSum = min(minSum, windowSum);
+        }
+
+        return totalSum - minSum;
     }
 };

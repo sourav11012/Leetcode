@@ -1,23 +1,36 @@
 class Solution {
 public:
     int maxScore(vector<int>& cardPoints, int k) {
-        int currentSum = 0;
-        for(int i = 0;i<k;i++)
-        {   
-            currentSum += cardPoints[i];
-
-        }
-      
-        int maxSum = currentSum;
-        int left = k - 1;
-        int right = cardPoints.size() - 1;
-        while(left  >= 0)
+       
+        int totalSum = 0;
+        for(int num: cardPoints)
         {
-            currentSum -= cardPoints[left--];
-            currentSum += cardPoints[right--];
-            maxSum = max(maxSum, currentSum);
+            totalSum += num;
         }
+        
+        int windowSum = 0;
+        int minWindowSize = cardPoints.size() - k;
+        for(int i = 0;i< minWindowSize ;i++)
+        {
+            windowSum += cardPoints[i];
+        }   
+        cout<<windowSum<<endl;
+        int minSum = windowSum;
 
-        return maxSum;
+        int right = minWindowSize;
+        int left = 0;
+
+        while(right < cardPoints.size())
+        {
+            windowSum += cardPoints[right];
+            windowSum  -= cardPoints[left];
+            cout<<"window sum"<<windowSum<<" at "<<right<<endl;
+            minSum = std::min(minSum , windowSum);
+            cout<<"min sum"<<minSum<<" at "<<right<<endl;
+            right++;
+            left++;
+        }
+        return (totalSum == minSum) ? minSum : totalSum - minSum;
+        
     }
 };

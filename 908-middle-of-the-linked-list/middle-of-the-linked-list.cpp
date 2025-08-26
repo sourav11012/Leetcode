@@ -11,19 +11,21 @@
 class Solution {
 public:
     ListNode* middleNode(ListNode* head) {
-        unordered_map<int, ListNode*> map;
+        
 
-        ListNode* curr = head;
+        ListNode* slow = head;
+        ListNode* fast = head;
         int idx = 0;
-        while(curr)
+        while(fast && fast->next)
         {
-            map[idx++] = curr;
-            curr = curr->next;
+           
+           slow = slow->next;
+            fast = fast->next->next;
             
         }
 
 
 
-        return map[map.size() / 2];
+        return slow;
     }
 };

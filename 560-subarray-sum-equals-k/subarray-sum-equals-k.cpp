@@ -3,22 +3,24 @@ public:
     int subarraySum(vector<int>& nums, int k) {
         unordered_map<int,int> map;
         map[0] = 1;
-        int currSum = 0;
-        int count = 0;
-       
+        int maxCount = 0;
+
+        int preSum =0;
+
         for(int num : nums)
         {
-            currSum += num;
-
-            if(map.find(currSum - k) != map.end())
+             preSum += num;
+            
+            if(map.count(preSum - k))
             {
-                count += map[currSum - k];
+                maxCount += map[preSum - k];
             }
-
-            map[currSum]++;
+             map[preSum] += 1;
+           
+            
         }
 
-        return count;
+        return maxCount;
 
     }
 };

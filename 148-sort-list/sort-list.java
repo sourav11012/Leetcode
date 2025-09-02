@@ -9,25 +9,68 @@
  * }
  */
 class Solution {
-    public ListNode sortList(ListNode head) {
-    
-        PriorityQueue<ListNode> pq = new PriorityQueue<>(( a, b) -> Integer.compare(a.val,b.val));
-        ListNode itr = head;
 
-        while(itr!= null)
+    ListNode findMid(ListNode head)
+    {
+        ListNode slow = head;
+        ListNode fast = head.next;
+
+        while(fast != null && fast.next != null)
         {
-            pq.add(itr);
-            itr = itr.next;
+            slow = slow.next;
+            fast = fast.next.next;
         }
+
+        return slow;
+
+    }
+
+    ListNode merge(ListNode list1, ListNode list2)
+    {
         ListNode dummy = new ListNode(-1);
-        ListNode curr = dummy;
-        while(!pq.isEmpty())
+        ListNode temp = dummy;
+
+        while(list1 != null && list2 != null)
         {
-            ListNode temp = pq.poll();
-            curr.next = temp;
-            curr = temp;
-        } curr.next = null;
+
+            if(list1.val < list2.val)
+            {
+                temp.next = list1;
+                temp = list1;
+                list1 = list1.next;
+            }else{
+                temp.next = list2;
+                temp = list2;
+                list2 = list2.next;
+            }
+
+
+
+        }
+
+        if(list1 != null) temp.next = list1;
+        else temp.next = list2;
 
         return dummy.next;
+    }
+
+
+
+    public ListNode sortList(ListNode head) {
+
+        if(head == null || head.next == null) return head;
+
+        ListNode mid = findMid(head);
+        ListNode leftHead = head;
+        ListNode rightHead = mid.next;
+        mid.next = null;
+
+        leftHead = sortList(leftHead);
+        rightHead = sortList(rightHead);
+
+        return merge(leftHead, rightHead);
+
+
+
     }
 }

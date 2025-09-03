@@ -12,7 +12,7 @@ public:
         visited[row][col] = 1;
 
         // Directions: right, down, left, up
-        vector<vector<int>> dirs = {{0,1},{1,0},{0,-1},{-1,0}};
+        int dirs[4][2] = {{0,1},{1,0},{0,-1},{-1,0}};
 
         for (auto dir : dirs) {
             int newRow = row + dir[0];

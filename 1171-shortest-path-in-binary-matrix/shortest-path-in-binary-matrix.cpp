@@ -32,7 +32,7 @@ public:
 
             int dirs [8][2]={{1,0},{0,1},{-1,0},{0,-1},{1,1},{-1,-1},{-1,1},{1,-1}};
 
-            for(auto dir : dirs)
+            for(int (&dir)[2]  : dirs)
             {
                 int newRow = curr.first + dir[0];
                 int newCol = curr.second + dir[1];

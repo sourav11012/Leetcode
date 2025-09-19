@@ -1,33 +1,29 @@
 class Solution {
-    private int minCoin(int idx, int[] coins, int amount , int[][]dp)
-    {
-       
-        if(idx < 0){
-            if(amount == 0) return 0;
+
+    private int fn(int idx, int[] coins, int amount,int[][] dp){
+
+        if(idx == 0)
+        {
+            if(amount % coins[idx] == 0) return amount / coins[idx];
             else return (int)1e9;
         }
-        if(amount == 0) return 0;
-        if(dp[idx][amount + amount] != -1) return dp[idx][amount + amount];
+
+        if(dp[idx][amount] != -1) return dp[idx][amount];
+
+        int notPick = fn(idx - 1, coins, amount,dp);
         int pick = (int)1e9;
         if(amount >= coins[idx])
         {
-            pick = 1 + minCoin(idx, coins, amount - coins[idx],dp);
+            pick = 1 + fn(idx , coins, amount - coins[idx],dp);
         }
-        
-        int notPick = minCoin(idx - 1, coins, amount, dp);
-
-         dp[idx][amount +amount] = Math.min(pick, notPick);
-         return dp[idx][amount + amount];
-
-
+        dp[idx][amount] = Math.min(pick , notPick);
+        return dp[idx][amount];
     }
-
-
     public int coinChange(int[] coins, int amount) {
-        int[][] dp = new int[coins.length][amount * 2 + 1];
-        for(int[] arr : dp)
-        Arrays.fill(arr,-1);
-        int result = minCoin(coins.length - 1, coins, amount, dp);
-        return  result ==  (int)1e9 ? -1 : result;
+        int[][]dp =new int[coins.length][amount+1];
+        for(int[] arr :dp)
+        Arrays.fill(arr, -1);
+        int ans = fn(coins.length - 1, coins, amount,dp);
+        return (ans == (int)1e9) ? -1 : ans;
     }
 }

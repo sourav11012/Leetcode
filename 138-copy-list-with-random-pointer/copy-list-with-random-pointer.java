@@ -15,31 +15,47 @@ class Node {
 
 class Solution {
     public Node copyRandomList(Node head) {
+        if(head == null) return null;
         Node itr = head;
         Node dummy = new Node(-1);
-        dummy = itr;
-        Map<Node, Node> map = new HashMap<>();
 
-        while(itr != null )
+        while(itr != null)
         {
             Node newNode = new Node(itr.val);
-            map.put(itr , newNode);
-            itr = itr.next;
-        }
 
+            Node temp = itr.next;
+            itr.next = newNode;
+            newNode.next = temp;
+            itr = temp;
+
+        }
+        Node newHead = head.next;
         itr = head;
         while(itr != null)
         {
-            
-            Node newNode = map.get(itr);
+            Node temp  = itr.next.next;
+            // Node nextNewNode = itr.next.next != null ? itr.next.next.next : null;
+            Node randomNewNode = itr.random != null ? itr.random.next : null;
+            // itr.next.next = nextNewNode;
+            itr.next.random = randomNewNode;
+            itr = temp;
 
-            newNode.next = map.get(itr.next);
-            newNode.random = map.get(itr.random);
-
-            itr = itr.next;
         }
-        Node newHead = map.get(head);
-        return newHead;
+        itr = head;
+        while(itr != null)
+        {
+            Node temp = itr.next.next;
+            Node newNode = itr.next;
+            Node nextNewNode = itr.next.next != null ? itr.next.next.next : null;
+            
+            itr.next = itr.next.next;
+            newNode.next = nextNewNode;
+            itr = temp;
 
+
+
+
+        }
+        return newHead;
     }
 }

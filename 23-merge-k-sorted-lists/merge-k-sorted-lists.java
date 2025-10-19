@@ -13,27 +13,32 @@ class Solution {
         
         PriorityQueue<ListNode> pq = new PriorityQueue<>((ListNode a, ListNode b) -> a.val - b.val);
 
-        for(int i = 0;i<lists.length; i++)
-        {
-            ListNode head = lists[i];
-            while(head != null)
-            {   
-                
+
+        
+        ListNode result = new ListNode(-1);
+        ListNode itr = result;
+        while(true){
+            for(int i = 0;i<lists.length; i++)
+            {
+                if(lists[i] != null)
+                {
+                ListNode head = lists[i];
                 pq.offer(head);
-                head = head.next;
-               
+                lists[i] = lists[i].next;
+                }
+                
             }
-        }
-        ListNode newhead = new ListNode(-1);
-        ListNode itr = newhead;
-        while(!pq.isEmpty())
-        {
+            if(pq.isEmpty()) break;
             ListNode temp = pq.remove();
             temp.next = null;
             itr.next = temp;
             itr = itr.next;
-
+            
+        
         }
-        return newhead.next;
+
+        return result.next;
+          
+        
     }
 }

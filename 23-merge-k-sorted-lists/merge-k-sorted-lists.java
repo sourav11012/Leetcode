@@ -17,24 +17,22 @@ class Solution {
         
         ListNode result = new ListNode(-1);
         ListNode itr = result;
-        while(true){
-            for(int i = 0;i<lists.length; i++)
-            {
-                if(lists[i] != null)
-                {
-                ListNode head = lists[i];
-                pq.offer(head);
-                lists[i] = lists[i].next;
-                }
-                
-            }
-            if(pq.isEmpty()) break;
+        
+        for(int i = 0;i<lists.length;i++)
+        {
+            if(lists[i] != null)
+            pq.offer(lists[i]);
+        }
+
+        while(!pq.isEmpty())
+        {
             ListNode temp = pq.remove();
+            if(temp.next != null)
+                pq.offer(temp.next);
             temp.next = null;
             itr.next = temp;
             itr = itr.next;
             
-        
         }
 
         return result.next;

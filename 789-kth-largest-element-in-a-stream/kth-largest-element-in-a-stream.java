@@ -16,7 +16,7 @@ class KthLargest {
         pq.add(val);
         while(pq.size() > size)
         {
-            pq.remove();
+            pq.poll();
         }
         return pq.peek();
     }

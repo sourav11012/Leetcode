@@ -9,7 +9,7 @@ class Twitter {
             this.val =val;
         }
     }
-    Map<Integer, List<Integer>> followers;  // follower -> list of followees
+    Map<Integer, List<Integer>> followers;  // followee -> list of follow
     Map<Integer, List<Post>> posts;      // user -> list of tweets
 
     public Twitter() {
@@ -18,32 +18,51 @@ class Twitter {
     }
 
     public void postTweet(int userId, int tweetId) {
-        posts.computeIfAbsent(userId, k -> new ArrayList<>()).add(new Post(globalTime++,tweetId));
+        Post newPost = new Post(globalTime++,tweetId);
+
+        posts.computeIfAbsent(userId, k -> new ArrayList<>()).add(newPost);
+
+        // List<Integer> currentFollowers = followers.getOrDefault(userId,new ArrayList<>());
+
+        // for(int follower : currentFollowers)
+        // {
+        //     posts.get(follower).add(newPost);
+        // }
     }
 
     public List<Integer> getNewsFeed(int userId) {
-        List<Post> topPosts = new ArrayList<>(posts.getOrDefault(userId, new ArrayList<>()));
+        PriorityQueue<Post> pq = new PriorityQueue<>((a,b) ->  a.time - b.time);
+
+        List<Post> usersPosts = new ArrayList<>(posts.getOrDefault(userId, new ArrayList<>()));
+        for(Post p : usersPosts)
+        {
+            pq.offer(p);
+            if(pq.size() > 10)
+            {
+                pq.remove();
+            }
+        }
 
         List<Integer> currFollowees = followers.getOrDefault(userId, new ArrayList<>());
 
         for (int followee : currFollowees) {
-            topPosts.addAll(posts.getOrDefault(followee, new ArrayList<>()));
+            for(Post p : posts.getOrDefault(followee, new ArrayList<>())){
+                pq.offer(p);
+                if(pq.size() > 10)
+                pq.remove();
+            }
         }
 
-        Collections.sort(topPosts, new Comparator<Post>(){
-            public int compare(Post a, Post b)
-            {
-                return b.time - a.time;
-            }
-        });
+       
         List<Integer> feed = new ArrayList<>();
-        int count = 0;
-        for(Post p : topPosts)
+   
+        while(!pq.isEmpty())
         {
-            if(count == 10) break;
-            feed.add(p.val);
-            count++;
+            
+            feed.add(pq.remove().val);
+           
         }
+        Collections.reverse(feed);
         return feed;
     }
 

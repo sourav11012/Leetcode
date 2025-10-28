@@ -2,7 +2,7 @@ class Solution {
 
     void fn(int start,int end, String s,List<String> wordDict,List<String> curr,List<String> ds )
     {
-        if(end > s.length() - 1 )
+        if(end == s.length() )
         {
             if(start == end )
             {
@@ -37,14 +37,7 @@ class Solution {
         List<String> ds = new ArrayList<>();
 
         fn(0,0,s,wordDict,curr,ds);
-        // List<String> result = new ArrayList<>();
-        // for(String temp : ds)
-        // {
-        //     if(temp.equals(""))
-        //     continue;
-        //     else
-        //     result.add(temp);
-        // }
+    
         return ds;
     }
 }

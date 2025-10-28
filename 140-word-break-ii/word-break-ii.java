@@ -1,43 +1,30 @@
 class Solution {
 
-    void fn(int start,int end, String s,List<String> wordDict,List<String> curr,List<String> ds )
-    {
-        if(end == s.length() )
-        {
-            if(start == end )
-            {
-            ds.add(String.join(" ", curr));
+    void fn(int start, int end, String s, Set<String> wordSet, List<String> curr, List<String> ds) {
+        if (end == s.length()) {
+            if (start == end) {
+                ds.add(String.join(" ", curr));
+            }
             return;
-            }
-            else{
-                return;
-            }
         }
 
-        if(wordDict.contains(s.substring(start, end + 1)))
-        {
-            curr.add(s.substring(start, end + 1));
-            
-            fn(end + 1, end + 1, s, wordDict, curr, ds);
+        String sub = s.substring(start, end + 1);
+        if (wordSet.contains(sub)) {
+            curr.add(sub);
+            fn(end + 1, end + 1, s, wordSet, curr, ds);
             curr.remove(curr.size() - 1);
         }
-        
-        
-        fn(start, end + 1, s, wordDict, curr, ds);
-        
-        return ;
+
+        if (end < s.length()) {
+            fn(start, end + 1, s, wordSet, curr, ds);
+        }
     }
 
-
-
-
     public List<String> wordBreak(String s, List<String> wordDict) {
-        // StringBuilder sb = new StringBuilder();
+        Set<String> wordSet = new HashSet<>(wordDict);
         List<String> curr = new ArrayList<>();
         List<String> ds = new ArrayList<>();
-
-        fn(0,0,s,wordDict,curr,ds);
-    
+        fn(0, 0, s, wordSet, curr, ds);
         return ds;
     }
 }

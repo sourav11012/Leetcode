@@ -24,27 +24,25 @@ class Solution {
 
         while(!q.isEmpty())
         {
-            ArrayList<Integer> temp = new ArrayList<>();
-            ArrayList<TreeNode> temp2 = new ArrayList<>();
-            while(!q.isEmpty())
+            ArrayList<Integer> level = new ArrayList<>();
+            int size = q.size();
+           
+            for(int i = 0; i<size; i++)
             {
             TreeNode curr = q.poll();
-            temp.add(curr.val);
-            temp2.add(curr);
-            }
+            level.add(curr.val);
+            if(curr.left != null)
+                    q.add(curr.left);
+                if(curr.right != null)
+                    q.add(curr.right);
 
-            for(TreeNode tn : temp2)
-            {
-                if(tn.left != null)
-                    q.add(tn.left);
-                if(tn.right != null)
-                    q.add(tn.right);
-            }
-            result.add(new ArrayList<>(temp));
-            temp.clear();
-            temp2.clear();
+            
         }
+         result.add(level);
+         }
+       
 
-        return result;
+       return result;
     }
+     
 }

@@ -1,45 +1,36 @@
 class Solution {
-    class Pair{
-        int first;
-        int second;
-        Pair(int first, int second)
-        {
-            this.first = first;
-            this.second= second;
-        }
-    }
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        Queue<Pair> q = new LinkedList<>();
+        record Pair(int row, int col){};
         int n = image.length;
         int m = image[0].length;
-        int currColor = image[sr][sc];
-        q.add(new Pair(sr,sc));
-        int[][] visited = new int[image.length][image[0].length];
-        int[][] dirs = {{1,0},{0,1},{-1,0},{0,-1}};
+
+        int visited[][] = new int[n][m];
         visited[sr][sc] = 1;
+
+        Queue<Pair> q = new LinkedList<>();
+        int[][] dirs = new int[][]{{1,0},{0,1},{-1,0},{0,-1}};
+        q.offer(new Pair(sr,sc));
+        int prevColor = image[sr][sc];
         image[sr][sc] = color;
 
-        while(!q.isEmpty())
-        {
+        while(!q.isEmpty()){
             Pair curr = q.poll();
-           
-           
-            for(int[] dir : dirs)
+            
+            for(int dir[] : dirs)
             {
-                 int newRow = curr.first + dir[0];
-            int newCol = curr.second + dir[1];
+                int newCol = curr.col() + dir[0];
+                int newRow = curr.row() + dir[1];
 
-                if(newRow < n && newRow >= 0 && newCol < m && newCol >=0 && image[newRow][newCol] == currColor && visited[newRow][newCol] != 1)
+                if(newCol < m && newRow < n && newCol >= 0 && newRow >= 0 && visited[newRow][newCol] == 0 && image[newRow][newCol] == prevColor)
                 {
                     image[newRow][newCol] = color;
                     visited[newRow][newCol] = 1;
-                    q.add(new Pair(newRow, newCol));
+                    q.offer(new Pair(newRow, newCol));
                 }
             }
+
         }
-        
 
         return image;
-
     }
 }

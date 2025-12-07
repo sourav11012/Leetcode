@@ -25,23 +25,25 @@ class Solution {
         // {
         //     Arrays.fill(temp,-1);
         // }
-
-        for(int i = 0;i<n;i++)
+        int[] prev = new int[m];
+         for(int i = 0;i<n;i++)
         {
+            int[] curr = new int[m];
             for(int j = 0;j<m;j++)
             {
-                if(obstacleGrid[i][j] == 1) dp[i][j] = 0;
-                else if(i == 0 && j == 0) dp[i][j] = 1;
+                if(obstacleGrid[i][j] == 1) curr[j] = 0;
+                else if(i == 0 && j == 0) curr[j] = 1;
                 else{
                     int left = 0; int up = 0;
-                    if(j > 0) left = dp[i][j -1];
-                    if(i > 0) up = dp[i-1][j];
-                    dp[i][j] = left+ up;
+                    if(j > 0) left = curr[j -1];
+                    if(i > 0) up = prev[j];
+                    curr[j] = left+ up;
                 }
                     
             }
+            prev =curr;
         }
         // return fn(obstacleGrid,n-1, m-1,dp);
-       return  dp[n-1][m-1];
+       return  prev[m-1];
     }
 }

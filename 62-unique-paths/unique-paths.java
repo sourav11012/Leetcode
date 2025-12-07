@@ -1,44 +1,29 @@
 class Solution {
-    public int findPaths(int[][] grid, int i, int j, int endi , int endj,int[][]dp)
+    public int findPaths(int i , int j, int[][] grid ,int[][]dp)
     {
         int m = grid.length;
         int n = grid[0].length;
-        if(i == endi && j == endj)
-        {
-            return 1;
-        }
-        if(i >= m || j >= n || j<0 || i<0 || grid[i][j] == 1)
-        {
-            return 0;
-        }
-        if(dp[i][j] != -1) return dp[i][j];
-        
-        grid[i][j] = 1;
 
-        int[][] dirs = new int[][]{{1,0},{0,1}};
-        int count = 0;
-        for(int[] dir : dirs)
-        {
-            int nr = i + dir[0];
-            int nc = j + dir[1];
-            count = count + findPaths(grid,nr,nc,endi, endj,dp);
-            
-        }
-        grid[i][j] = 0;
-        dp[i][j] = count;
+        if(i == m - 1&& j == n - 1) return 1;
+
+        if(i >= m || j >=n) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
+
+        int right = findPaths(i ,j + 1,grid,dp);
+        int down = findPaths(i + 1, j, grid,dp);
+        dp[i][j] = right + down;
         return dp[i][j];
     }
 
-    public int uniquePaths(int m, int n) {
-        int grid[][] = new int[m][n];
-        int dp[][] = new int[m][n];
 
+
+    public int uniquePaths(int m, int n) {
+        int dp[][] = new int[m][n];
         for(int[] temp : dp)
         {
             Arrays.fill(temp,-1);
         }
-
-        int totalPaths = findPaths(grid,0,0,m-1,n-1 ,dp);
-        return totalPaths;
+        int count = findPaths(0,0,new int[m][n],dp);
+        return count;
     }
 }

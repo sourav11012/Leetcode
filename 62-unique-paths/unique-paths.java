@@ -19,11 +19,31 @@ class Solution {
 
     public int uniquePaths(int m, int n) {
         int dp[][] = new int[m][n];
-        for(int[] temp : dp)
+        // for(int[] temp : dp)
+        // {
+        //     Arrays.fill(temp,-1);
+        // }
+
+        
+
+        for(int i = m-1;i>=0;i--)
         {
-            Arrays.fill(temp,-1);
+            for(int j = n-1; j>=0;j--)
+            {
+                
+                if(j == n-1 && i == m-1) dp[m-1][n-1] = 1; 
+                else{
+                    int right = 0;
+                    int down =0;
+                    if(j < n-1) right= dp[i][j + 1];
+                    if(i < m-1) down = dp[i + 1][j];
+                     dp[i][j] = right + down;
+
+                }
+               
+            }
         }
-        int count = findPaths(0,0,new int[m][n],dp);
-        return count;
+      
+        return dp[0][0];
     }
 }

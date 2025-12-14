@@ -24,11 +24,29 @@ class Solution {
     public int maxProfit(int[] prices) {
         int n = prices.length;
 
-        Integer[][]dp = new Integer[n][2];
-        for(Integer [] row : dp)
+        int[][]dp = new int[n+1][2];
+        // for(Integer [] row : dp)
+        // {
+        //     Arrays.fill(row, null);
+        // }
+        for(int idx = n-1; idx>=0;idx--)
         {
-            Arrays.fill(row, null);
+            for(int flag = 0 ;flag <=1;flag++)
+            {
+                int buy = Integer.MIN_VALUE;
+                int sell = Integer.MIN_VALUE;
+                if(flag == 1)
+                {
+                    buy = -prices[idx] + dp[idx + 1][0];
+                }else{
+                    sell = prices[idx] + dp[idx + 1][1];
+                }
+                int skip = dp[idx + 1][flag];
+                dp[idx][flag]= Math.max(Math.max(buy, sell), skip);
+
+            }
         }
-        return fn(prices, 0 , 1,dp);
+        return dp[0][1];
+        // return fn(prices, 0 , 1,dp);
     }
 }

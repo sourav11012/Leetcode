@@ -1,36 +1,32 @@
 class Solution {
-    public boolean detectCycle(int node, ArrayList<ArrayList<Integer>> adj,int visited[])
+    //0 -> not visited
+    // 1 -> cycle detected
+    // 2 -> completely visited
+
+    public boolean findCycle(int curr,List<List<Integer>> adj, int[]visited )
     {
-        if(visited[node] == 1) return true;
-        if (visited[node] == 2) return false;
-
-        visited[node] = 1;
-
-        for(int neig: adj.get(node))
+        if(visited[curr] == 1) return false; // cycle detected
+        
+        visited[curr] = 1;
+        for(int neig : adj.get(curr))
         {
+            if(visited[neig] == 1) return false;
 
-            if (visited[neig] == 1) {
-                // back edge to a node in the current recursion stack
-                return true;
-            }
-            
             if(visited[neig] == 0)
             {
-                
-            if(detectCycle(neig, adj, visited))
-            {
-                return true;
-            }  
+                if (!findCycle(neig, adj, visited)) {
+                    return false;
+                }
             }
         }
-        visited[node] = 2;
-        return false;
+        visited[curr] = 2;
+        return true;
+
     }
 
-
     public boolean canFinish(int numCourses, int[][] prerequisites) {
-        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
-        for(int i =0;i<numCourses;i++)
+        List<List<Integer>> adj = new ArrayList<>();
+        for(int i=0;i<numCourses; i++)
         {
             adj.add(new ArrayList<>());
         }
@@ -39,15 +35,11 @@ class Solution {
         {
             adj.get(edge[1]).add(edge[0]);
         }
-        int visited[] = new int[numCourses];
+        int[] visited = new int[numCourses];
 
-        for(int i = 0;i<numCourses;i++)
-        {
-            if(visited[i] == 0)
-            {
-                
-                if(detectCycle(i,adj,visited))
-                {
+        for (int i = 0; i < numCourses; i++) {
+            if (visited[i] == 0) {
+                if (!findCycle(i, adj, visited)) {
                     return false;
                 }
             }

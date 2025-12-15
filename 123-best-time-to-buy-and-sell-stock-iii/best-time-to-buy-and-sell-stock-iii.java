@@ -23,6 +23,8 @@ class Solution {
 
     public int maxProfit(int[] prices) {
         int[][][] dp = new int[prices.length + 1][2][3];
+        int[][] ahead = new int[2][3];
+        int[][] curr = new int[2][3];
 
         for(int idx = prices.length - 1 ; idx>=0; idx--)
         {
@@ -34,17 +36,19 @@ class Solution {
                     int sell = Integer.MIN_VALUE;
                     if(flag == 1)
                     {
-                        buy = -prices[idx] + dp[idx + 1][ 0 ][cap];
+                        buy = -prices[idx] + ahead[ 0 ][cap];
                     }else{
-                        sell = prices[idx] + dp[idx + 1][1][cap - 1];
+                        sell = prices[idx] + ahead[1][cap - 1];
                     }
-                    int skip = dp[idx + 1][flag][cap];
-                    dp[idx][flag][cap]= Math.max(Math.max(buy, sell), skip);
+                    int skip = ahead[flag][cap];
+                    curr[flag][cap]= Math.max(Math.max(buy, sell), skip);
 
                 }
+                ahead = curr;
             }
+
         }
 
-        return dp[0][ 1][2];
+        return ahead[ 1][2];
     }
 }

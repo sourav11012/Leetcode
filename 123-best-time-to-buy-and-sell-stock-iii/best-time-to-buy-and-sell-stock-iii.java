@@ -22,19 +22,29 @@ class Solution {
     }
 
     public int maxProfit(int[] prices) {
-        int[][][] dp = new int[prices.length][2][3];
+        int[][][] dp = new int[prices.length + 1][2][3];
 
-        for(int i = 0 ; i<prices.length ;i++)
+        for(int idx = prices.length - 1 ; idx>=0; idx--)
         {
-            for(int j = 0;j<2;j++)
+            for(int flag = 0;flag<2;flag++)
             {
-                for(int k = 0;k<3 ;k++)
+                for(int cap = 1;cap<3 ;cap++)
                 {
-                    dp[i][j][k] = -1;
+                    int buy = Integer.MIN_VALUE;
+                    int sell = Integer.MIN_VALUE;
+                    if(flag == 1)
+                    {
+                        buy = -prices[idx] + dp[idx + 1][ 0 ][cap];
+                    }else{
+                        sell = prices[idx] + dp[idx + 1][1][cap - 1];
+                    }
+                    int skip = dp[idx + 1][flag][cap];
+                    dp[idx][flag][cap]= Math.max(Math.max(buy, sell), skip);
+
                 }
             }
         }
 
-        return fn(prices, 0, 1, 2, dp);
+        return dp[0][ 1][2];
     }
 }

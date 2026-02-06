@@ -1,51 +1,55 @@
 class Solution {
-    class Node { 
-        int first;
-        int second;
-        int distance;
 
-        Node(int first, int second, int distance){
-            this.first = first;
-            this.second =second;
-            this.distance = distance;
+    class Pair {
+        int r, c, dist;
+
+        Pair(int r, int c, int dist){
+            this.r = r;
+            this.c = c;
+            this.dist = dist;
         }
-        
     }
+
     public int shortestPathBinaryMatrix(int[][] grid) {
-        
+
         int n = grid.length;
-        int m = grid[0].length;
-        Queue<Node> q = new LinkedList<>();
-        int visited[][] = new int[n][m];
-        
-        if(grid[0][0] == 1 || grid[n - 1][m - 1] == 1) return -1;
-        q.add(new Node(0,0,1));
-        visited[0][0] =1;
 
-        int[][] dirs = {{1,0},{0,1},{-1,0},{0,-1},{1,1},{-1,-1},{1,-1},{-1,1}};
+        // start or end blocked
+        if(grid[0][0] == 1 || grid[n-1][n-1] == 1)
+            return -1;
 
-        while(!q.isEmpty())
-        {
-            Node curr = q.peek();
-            q.poll();
-            if(curr.first == n - 1 && curr.second == m - 1) return curr.distance;
+        Queue<Pair> q = new LinkedList<>();
+        q.offer(new Pair(0,0,1));
 
-             for(int[] dir : dirs)
-             {
-                int newRow = curr.first + dir[0];
-                int newCol = curr.second + dir[1];
+        // mark visited
+        grid[0][0] = 1;
 
-                if(newRow < n && newRow >= 0 && newCol < m && newCol >= 0 && visited[newRow][newCol] == 0 && grid[newRow][newCol] == 0)
-                {
-                    visited[newRow][newCol] =1;
-                    q.add(new Node(newRow, newCol, curr.distance + 1));
-                   
+        int[][] dirs = {
+                {0,1},{1,0},{1,1},
+                {-1,-1},{0,-1},{-1,0},
+                {-1,1},{1,-1}
+        };
+
+        while(!q.isEmpty()){
+
+            Pair curr = q.poll();
+
+            if(curr.r == n-1 && curr.c == n-1)
+                return curr.dist;
+
+            for(int[] d : dirs){
+
+                int nr = curr.r + d[0];
+                int nc = curr.c + d[1];
+
+                if(nr>=0 && nc>=0 && nr<n && nc<n && grid[nr][nc]==0){
+
+                    q.offer(new Pair(nr, nc, curr.dist+1));
+                    grid[nr][nc] = 1; // mark visited
                 }
-             }
+            }
         }
 
         return -1;
-
-
     }
 }

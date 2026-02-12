@@ -24,10 +24,9 @@ class Solution {
 
                 if(!map.containsKey(num) || map.get(num) < count) return false;
 
-                map.put(num, map.get(num) - 1);
-                if(map.get(num) == 0) {
-                    map.remove(num);
-                }
+                if(map.get(num) == count) map.remove(num);
+                else map.put(num, map.get(num) - count);
+                
             }
 
         }   

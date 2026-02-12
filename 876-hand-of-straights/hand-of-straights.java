@@ -2,9 +2,10 @@ class Solution {
     public boolean isNStraightHand(int[] hand, int groupSize) {
         int n = hand.length;
         if(n % groupSize != 0) return false;
-        
+        if(groupSize == 1) return true;
 
         TreeMap<Integer, Integer> map = new TreeMap<>();
+
 
         for(int i : hand)
         {

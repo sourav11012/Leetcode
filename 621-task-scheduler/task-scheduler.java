@@ -1,22 +1,51 @@
 class Solution {
     public int leastInterval(char[] tasks, int n) {
-        if (n == 0) return tasks.length;
+         Map<Character, Integer> map = new HashMap<>();
 
-        int[] freq = new int[26];
-        for (char ch : tasks) freq[ch - 'A']++;
-
-        int maxFreq = 0;
-        for (int f : freq) maxFreq = Math.max(maxFreq, f);
-
-        int countMax = 0;
-        for (int f : freq) {
-            if (f == maxFreq) countMax++;
+        for(char ch : tasks){
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
         }
 
-        // Formula-based solution
-        int partCount = maxFreq - 1;
-        int emptySlots = partCount * (n + 1) + countMax;
+        // max heap
+        PriorityQueue<Integer> pq =
+                new PriorityQueue<>((a,b) -> b - a);
 
-        return Math.max(emptySlots, tasks.length);
+        pq.addAll(map.values());
+        int time = 0;
+
+        while(!pq.isEmpty()){
+
+            List<Integer> temp =new ArrayList<>();
+            int cycle = n+1;
+
+            while(cycle > 0 && !pq.isEmpty())
+            {
+                int freq = pq.poll();
+                freq--;
+
+                if(freq> 0)
+                {
+                    temp.add(freq);
+                }
+                time++;
+                cycle--;
+            }
+
+            for(int f:temp)
+            {
+                pq.offer(f);
+            }
+
+            if(pq.isEmpty())
+            {
+                break;
+            }
+
+            time +=cycle;
+
+
+        }
+        return time;
+
     }
 }

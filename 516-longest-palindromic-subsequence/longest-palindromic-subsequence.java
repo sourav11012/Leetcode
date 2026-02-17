@@ -26,7 +26,7 @@ class Solution {
             Arrays.fill(curr, 0);
         }
 
-        return prev[s.length()];
+        return prev[reversed.length()];
     }
 
     public int longestPalindromeSubseq(String s) {

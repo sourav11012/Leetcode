@@ -1,48 +1,39 @@
 class Solution {
 public:
     int trap(vector<int>& height) {
-    vector<int> leftMax;
-    vector<int> rightMax;
-    
-    int lMax = 0;
-    for(int i =0;i < height.size() ;i++)
+    int n = height.size();
+    int left = 0;
+    int right = n-1;
+
+    int leftMax = height[0];
+    int rightMax = height[n-1];
+    // vector<int> result(n);
+    int water = 0;
+
+    while(left < right)
     {
-        if(height[lMax] <= height[i])
+        if(height[left] <= height[right])
         {
-            leftMax.push_back(i);
-            lMax = i;
+            if(leftMax > height[left])
+            {
+                water += leftMax - height[left];
+            }else{
+                leftMax = height[left];
+                
+            }
+            left++;
+            
         }else{
-            leftMax.push_back(lMax);
+            if(rightMax > height[right])
+            {
+                water += rightMax - height[right];
+            }else{
+                rightMax = height[right];
+            }
+            right--;
         }
     }
-    for(int i : leftMax)
-    {
-        cout<<" "<< i ;
-    }
-    cout<<endl;
-    int rMax = height.size() - 1;
-    for(int i =height.size() - 1;i >= 0 ;i--)
-    {
-        if(height[rMax] <= height[i])
-        {
-            rightMax.push_back(i);
-            rMax = i;
-        }else{
-            rightMax.push_back(rMax);
-        }
-    }
-    reverse(rightMax.begin(), rightMax.end());
-    for(int i : rightMax)
-    {
-        cout<<" "<< i ;
-    }
-    int totalWater = 0;
-    for(int i = 0 ; i <height.size() -1 ;i++)
-    {
-        totalWater +=  min(height[leftMax[i]], height[rightMax[i]]) - height[i];
-    }
-    
-    return totalWater;
-    
+    return water;
+
     }
 };

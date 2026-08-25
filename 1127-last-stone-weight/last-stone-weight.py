@@ -13,4 +13,4 @@ class Solution:
             if z > 0:
                 heapq.heappush(max_heap, -z)
         
-        return -heapq.heappop(max_heap) if len(max_heap) == 1 else  0
+        return -max_heap[0] if len(max_heap) == 1 else  0
